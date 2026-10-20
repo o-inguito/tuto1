@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  # 첫 번째 서비스: 우리가 만든 웹 앱
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: always
+
+  # 두 번째 서비스: 수업 외 오픈소스 활용을 위한 Redis (창고/캐시 역할)
+  cache:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    restart: always
