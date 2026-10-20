@@ -1,0 +1,27 @@
+name: DevOps CI Pipeline
+
+# 언제 이 자동화 로봇을 실행할 것인가? (main 브랜치에 코드가 push될 때)
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. 깃허브에 올라온 코드를 가상 컴퓨터로 내려받기
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. 도커를 가상 컴퓨터에 세팅하기
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # 3. 내 코드가 에러 없이 도커 이미지로 잘 빌드되는지 테스트하기
+    - name: Build Docker image
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: false  # 실제 배포는 안 하고 빌드 테스트만 성공하는지 확인
+        tags: my-app:latest
